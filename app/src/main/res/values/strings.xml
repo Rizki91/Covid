@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Covid</string>
+    <string name="judul">Mari bekerja sama mencegah penyebaran virus Covid-19 dengan cara saling berbagi informasi tentang kondisi kesehatan dana lokasi anda</string>
+    <string name="kondisi">Kondisi saya hari ini</string>
+
+</resources>
