@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fahrul.covid.model.DataSPUCovidModel;
@@ -28,6 +29,7 @@ public class HalamanUtama extends AppCompatActivity {
     private int REQUEST_CODE = 100;
     String time = "";
     String jam = "1600140708";
+    LinearLayout linWar;
 
 
     @Override
@@ -35,6 +37,7 @@ public class HalamanUtama extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_halaman_utama);
 
+        linWar = findViewById(R.id.linWar);
         btnUpdate = findViewById(R.id.btnUpdate);
         btnLihat = findViewById(R.id.btnLihat);
         txtKondisi = findViewById(R.id.txtKondisi);
@@ -83,6 +86,7 @@ public class HalamanUtama extends AppCompatActivity {
         switch (mKondisi) {
             case "sehat":
 //                cvStatus.setCardBackgroundColor(Color.parseColor("#FFC1F486"));
+                linWar.setBackgroundResource(R.drawable.shape);
                 txtKondisi.setText("SEHAT");
                 imgKondisi.setImageResource(R.drawable.ic_emoji);
                 txtKet.setText("Terakhir update " + time);
@@ -91,6 +95,7 @@ public class HalamanUtama extends AppCompatActivity {
                 break;
             case "sakit":
 //                cvStatus.setCardBackgroundColor(Color.parseColor("#FFFFF6A4"));
+                linWar.setBackgroundResource(R.drawable.shape1);
                 txtKondisi.setText("SAKIT");
                 imgKondisi.setImageResource(R.drawable.ic_sick);
                 txtKet.setText("Terakhir update " + time);
@@ -98,8 +103,9 @@ public class HalamanUtama extends AppCompatActivity {
                 break;
             case "covid":
 //                cvStatus.setCardBackgroundColor(Color.parseColor("#FFFF9A9A"));
+                linWar.setBackgroundResource(R.drawable.shape2);
                 txtKondisi.setText("COVID");
-                imgKondisi.setImageResource(R.drawable.ic_sick);
+                imgKondisi.setImageResource(R.drawable.ic_fever);
                 txtKet.setText("Terakhir update " + time);
 
                 break;
