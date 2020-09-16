@@ -91,19 +91,6 @@
                     android:inputType="number" />
 
                 <Button
-                    android:id="@+id/btn_Kamera"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="upload foto selfi" />
-
-                <ImageView
-                    android:id="@+id/gambar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="90dp"
-                    android:layout_gravity="center"
-                    tools:srcCompat="@tools:sample/avatars" />
-
-                <Button
                     android:id="@+id/btn_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

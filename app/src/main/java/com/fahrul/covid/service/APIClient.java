@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
 
-    public static String BASE_URL ="http://192.168.43.87/cicool31/";
+    public static String BASE_URL ="http://192.168.43.87/cicool/api/";
     public static String API_KEY ="C4A703A566C464456396B523A8660601";
 
     private static Retrofit retrofit = null;

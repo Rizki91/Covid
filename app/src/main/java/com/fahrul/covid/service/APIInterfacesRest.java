@@ -7,6 +7,7 @@ package com.fahrul.covid.service;
 
 import com.fahrul.covid.model.Covid;
 import com.fahrul.covid.model.Register;
+import com.fahrul.covid.model.register.RegisterModel;
 import com.fahrul.covid.model.update.UpdateModel;
 
 
@@ -27,26 +28,26 @@ public interface APIInterfacesRest {
 
 
     @Multipart
-    @POST("api/covid/add")
-    Call<Register> addUser(
+    @POST("covid/add")
+    Call<RegisterModel> addUser(
             @Part("username") RequestBody username,
             @Part("kondisi") RequestBody kondisi,
             @Part("lat") RequestBody lat,
             @Part("lon") RequestBody lon,
-            @Part("timestmap") RequestBody timestmap,
+            @Part("timestamp") RequestBody timestamp,
             @Part("status") RequestBody status,
             @Part("nama_lengkap") RequestBody nama_lengkap,
             @Part("umur") RequestBody umur,
             @Part("jenis_kelamin") RequestBody jenis_kelamin,
             @Part("kota_domisili") RequestBody kota_domisili,
             @Part("no_telepon") RequestBody no_telepon,
-            @Part MultipartBody.Part img1
+            @Part("picture") RequestBody picture
     );
 
-    @GET("api/covid/detail")
+    @GET("covid/detail")
     Call<Covid>getDetail(@Query("id") String id);
     @Multipart
-    @POST("api/Covid/update")
+    @POST("Covid/update")
     Call<UpdateModel> updateData(
             @Part("id") RequestBody id,
             @Part("username") RequestBody username,

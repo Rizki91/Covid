@@ -16,9 +16,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fahrul.covid.model.DataSPUCovidModel;
 import com.fahrul.covid.model.Register;
+import com.fahrul.covid.model.register.Data;
+import com.fahrul.covid.model.register.RegisterModel;
 import com.fahrul.covid.service.APIClient;
 import com.fahrul.covid.service.APIInterfacesRest;
+import com.fahrul.covid.utility.SharedPrefUtil;
+import com.google.gson.Gson;
 import com.location.aravind.getlocation.GeoLocator;
 import com.squareup.picasso.Picasso;
 
@@ -63,24 +68,24 @@ public class MainActivity extends AppCompatActivity {
         txtTelepon = findViewById(R.id.txtTelepon);
 //        txtGps = findViewById(R.id.txtGps);
         spnJk = findViewById(R.id.spnJk);
-        imgPhoto = findViewById(R.id.gambar);
-        btnGambar = findViewById(R.id.btn_Kamera);
+//        imgPhoto = findViewById(R.id.gambar);
+//        btnGambar = findViewById(R.id.btn_Kamera);
         btnRegister = findViewById(R.id.btn_register);
 
 
-        btnGambar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ambilCamera();
-            }
-        });
+//        btnGambar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                ambilCamera();
+//            }
+//        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Date dNow = new Date();
-                SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-                register("Sehat", String.valueOf(geoLocator.getLattitude()), String.valueOf(geoLocator.getLongitude()), String.valueOf(ft.format(dNow)), "null", txtNama.getText().toString(), txtUmur.getText().toString(), spnJk.getSelectedItem().toString(), txtKota.getText().toString(), txtTelepon.getText().toString());
+//                Date dNow = new Date();
+//                SimpleDateFormat ft = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                register();
 //                Intent i = new Intent(MainActivity.this,HalamanUtama.class);
 //                startActivity(i);
 
@@ -97,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
     File file;
 
-    public void register(String kondisi, String lat, String lon, String timestmap, String status, String nama_lengkap, String umur, String jenis_kelamin, String kota_domisili, String no_telepon) {
+    public void register() {
         apiInterface = APIClient.getClient().create(APIInterfacesRest.class);
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setTitle("Loading");
@@ -108,44 +113,50 @@ public class MainActivity extends AppCompatActivity {
         String namadepan = arr[0];
 
 
-        RequestBody requestFile1 = RequestBody.create(MediaType.parse("image/jpeg"), file);
-        MultipartBody.Part bodyImg1 =
-                MultipartBody.Part.createFormData("picture", file.getName(), requestFile1);
+        Long tsLong = System.currentTimeMillis()/1000;
+       String ts = tsLong.toString();
 
-        Call<Register> absentAdd = apiInterface.addUser(
+
+//        RequestBody requestFile1 = RequestBody.create(MediaType.parse("image/jpeg"), file);
+//        MultipartBody.Part bodyImg1 =
+//                MultipartBody.Part.createFormData("picture", file.getName(), requestFile1);
+
+        Call<RegisterModel> absentAdd = apiInterface.addUser(
                 toRequestBody(namadepan),
-                toRequestBody(kondisi),
-                toRequestBody(lat),
-                toRequestBody(lon),
-                toRequestBody(timestmap),
-                toRequestBody(status),
-                toRequestBody(nama_lengkap),
-                toRequestBody(umur),
-                toRequestBody(jenis_kelamin),
-                toRequestBody(kota_domisili),
-                toRequestBody(no_telepon),
-                bodyImg1
+                toRequestBody("sehat"),
+                toRequestBody(String.valueOf(geoLocator.getLattitude())),
+                toRequestBody(String.valueOf(geoLocator.getLongitude())),
+                toRequestBody(ts),
+                toRequestBody("0 0 0 0 0"),
+                toRequestBody(txtNama.getText().toString()),
+                toRequestBody(txtUmur.getText().toString()),
+                toRequestBody(spnJk.getSelectedItem().toString()),
+                toRequestBody(txtKota.getText().toString()),
+                toRequestBody(txtTelepon.getText().toString()),
+                toRequestBody("")
 
 
         );
 
 
-        absentAdd.enqueue(new Callback<Register>() {
+        absentAdd.enqueue(new Callback<RegisterModel>() {
             @Override
-            public void onResponse(Call<Register> call, Response<Register> response) {
+            public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
 
                 progressDialog.dismiss();
 
-                Register status = response.body();
+                RegisterModel status = response.body();
 
                 if (status != null) {
 
                     if (status.getStatus()) {
+                        Gson gson = new Gson();
+                        String json = gson.toJson(status.getData());
+                        SharedPrefUtil.getInstance(MainActivity.this).put("data_input", json);
 
-                        Intent io = new Intent(MainActivity.this, HalamanUtama.class);
-                        startActivity(io);
-
-
+                        Intent intent = new Intent(MainActivity.this, HalamanUtama.class);
+                        startActivity(intent);
+                        finish();
 
 
                     } else {
@@ -186,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Register> call, Throwable t) {
+            public void onFailure(Call<RegisterModel> call, Throwable t) {
 
                 progressDialog.dismiss();
                 Toast.makeText(MainActivity.this, "Maaf koneksi bermasalah", Toast.LENGTH_LONG).show();
@@ -204,44 +215,44 @@ public class MainActivity extends AppCompatActivity {
         return body;
     }
 
-    public void ambilCamera() {
-        Intent intent = new Intent(this, CameraControllerActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("inputData", new CameraBundleBuilder()
-                .setFullscreenMode(false)
-                .setDoneButtonString("Add")
-                .setSinglePhotoMode(false)
-                .setMax_photo(1)
-                .setManualFocus(true)
-                .setBucketName(getClass().getName())
-                .setPreviewEnableCount(true)
-                .setPreviewIconVisiblity(true)
-                .setPreviewPageRedirection(true)
-                .setEnableDone(false)
-                .setClearBucket(true)
-                .createCameraBundle());
-        startActivityForResult(intent, 214);
-    }
+//    public void ambilCamera() {
+//        Intent intent = new Intent(this, CameraControllerActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.putExtra("inputData", new CameraBundleBuilder()
+//                .setFullscreenMode(false)
+//                .setDoneButtonString("Add")
+//                .setSinglePhotoMode(false)
+//                .setMax_photo(1)
+//                .setManualFocus(true)
+//                .setBucketName(getClass().getName())
+//                .setPreviewEnableCount(true)
+//                .setPreviewIconVisiblity(true)
+//                .setPreviewPageRedirection(true)
+//                .setEnableDone(false)
+//                .setClearBucket(true)
+//                .createCameraBundle());
+//        startActivityForResult(intent, 214);
+//    }
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 214) {
-            if (resultCode == RESULT_OK) {
-                assert data != null;
-                list = data.getStringArrayExtra("resultData");
-                file = new File(list[0]);
-                Picasso.get().load(file).into(imgPhoto);
-
-//                txtGps.setText(String.valueOf(geoLocator.getLattitude()) +";"+ String.valueOf(geoLocator.getLongitude()));
-            }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FileUtils.clearAllFiles(this, getClass().getName());
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 214) {
+//            if (resultCode == RESULT_OK) {
+//                assert data != null;
+//                list = data.getStringArrayExtra("resultData");
+//                file = new File(list[0]);
+//                Picasso.get().load(file).into(imgPhoto);
+//
+////                txtGps.setText(String.valueOf(geoLocator.getLattitude()) +";"+ String.valueOf(geoLocator.getLongitude()));
+//            }
+//        }
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        FileUtils.clearAllFiles(this, getClass().getName());
+//    }
 }

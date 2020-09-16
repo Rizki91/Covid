@@ -14,9 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".UpdateStatus"
-            android:label="Kembali"
-            android:parentActivityName=".HalamanUtama"></activity>
+        <activity android:name=".Darurat"></activity>
+        <activity android:name=".Keterangan" />
+        <activity android:name=".UpdateStatus" />
         <activity android:name=".HalamanUtama" />
         <activity android:name=".MainActivity">
             <intent-filter>

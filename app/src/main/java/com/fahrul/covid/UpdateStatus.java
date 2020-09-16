@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -32,7 +33,7 @@ import retrofit2.Response;
 public class UpdateStatus extends AppCompatActivity {
 
     DataSPUCovidModel dataSPUCovidModel;
-
+    LinearLayout linlayKembali;
     CheckBox cb1,cb2,cb3,cb4,cb5;
     Button btnUpdate;
     String scb1 = "0", scb2 = "0", scb3 = "0", scb4 = "0", scb5 = "0";
@@ -43,7 +44,7 @@ public class UpdateStatus extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_status);
 
-
+        linlayKembali = findViewById(R.id.linlayKembali);
         cb1 = findViewById(R.id.cb1);
         cb2 = findViewById(R.id.cb2);
         cb3 = findViewById(R.id.cb3);
@@ -82,6 +83,13 @@ public class UpdateStatus extends AppCompatActivity {
             }
         });
 
+        linlayKembali.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
     }
 
     APIInterfacesRest apiInterface;
@@ -113,12 +121,40 @@ public class UpdateStatus extends AppCompatActivity {
         String kondisi;
         if (status.equals("0 0 0 0 0")){
             kondisi = "sehat";
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(UpdateStatus.this,Keterangan.class);
+                    startActivity(i);
+                }
+            },1000);
         } else if (status.equals("1 1 0 1 0")){
             kondisi = "sakit";
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(UpdateStatus.this,Keterangan.class);
+                    startActivity(i);
+                }
+            },1000);
         } else if (status.equals("0 1 0 1 1") || status.equals("0 1 1 1 1") || status.equals("1 1 1 1 1")){
             kondisi = "covid";
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(UpdateStatus.this,Darurat.class);
+                    startActivity(i);
+                }
+            },1000);
         } else {
             kondisi = "sakit";
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent i = new Intent(UpdateStatus.this,Keterangan.class);
+                    startActivity(i);
+                }
+            },1000);
         }
 
         //TimeStamp
