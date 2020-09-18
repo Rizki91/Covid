@@ -51,6 +51,14 @@ public class HalamanUtama extends AppCompatActivity {
         time = getTimeStampRemains(dataSPUCovidModel.getTimestamp());
         changeStatus(dataSPUCovidModel.getKondisi());
 
+        btnLihat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(HalamanUtama.this, MapsActivity.class);
+                startActivity(in);
+
+            }
+        });
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override

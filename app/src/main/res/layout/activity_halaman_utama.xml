@@ -129,7 +129,7 @@
                     android:layout_gravity="center"
                     android:autoText="false"
                     android:elegantTextHeight="false"
-                    android:text="Update status kesehatab saya"
+                    android:text="Update status kesehatan saya"
                     android:textAlignment="center"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="@+id/imageView4"

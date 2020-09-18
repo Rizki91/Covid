@@ -4,5 +4,6 @@
     <string name="kondisi">Kondisi saya hari ini</string>
 
     <string name="ket_sehat">Untuk saat ini anda tidak mengalami gejala-gejala yang terkait dengan virus Covid-19 \n\nNamun anda tetap perlu menjaga jarak fisik dengan orang lain untuk mencegah penularan dan selalu update status kesehatan anda di aplikasi ini</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

@@ -6,8 +6,25 @@ public class DataSPUCovidModel {
     private String jenis_kelamin;
     private String kondisi;
     private String kota_domisili;
-    private String lat;
-    private String lon;
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public void setLon(Double lon) {
+        this.lon = lon;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public Double getLon() {
+        return lon;
+    }
+
+    private Double lat;
+    private Double lon;
     private String nama_lengkap;
     private String no_telepon;
     private String status;
@@ -47,21 +64,21 @@ public class DataSPUCovidModel {
         this.kota_domisili = kota_domisili;
     }
 
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLon() {
-        return lon;
-    }
-
-    public void setLon(String lon) {
-        this.lon = lon;
-    }
+//    public String getLat() {
+//        return lat;
+//    }
+//
+//    public void setLat(String lat) {
+//        this.lat = lat;
+//    }
+//
+//    public String getLon() {
+//        return lon;
+//    }
+//
+//    public void setLon(String lon) {
+//        this.lon = lon;
+//    }
 
     public String getNama_lengkap() {
         return nama_lengkap;

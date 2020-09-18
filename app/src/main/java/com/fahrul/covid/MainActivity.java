@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnGambar, btnRegister;
     GeoLocator geoLocator;
     private String[] list;
+    Double lat = 0.0, lon = 0.0;
 
 
     @Override
@@ -73,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
 //        imgPhoto = findViewById(R.id.gambar);
 //        btnGambar = findViewById(R.id.btn_Kamera);
         btnRegister = findViewById(R.id.btn_register);
+        lat = getIntent().getDoubleExtra("lat",0);
+        lon = getIntent().getDoubleExtra("lon", 0);
+
 
 
 //        btnGambar.setOnClickListener(new View.OnClickListener() {

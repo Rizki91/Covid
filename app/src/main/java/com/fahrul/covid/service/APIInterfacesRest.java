@@ -7,6 +7,7 @@ package com.fahrul.covid.service;
 
 import com.fahrul.covid.model.Covid;
 import com.fahrul.covid.model.Register;
+import com.fahrul.covid.model.getall.GetAllModel;
 import com.fahrul.covid.model.register.RegisterModel;
 import com.fahrul.covid.model.update.UpdateModel;
 
@@ -44,8 +45,10 @@ public interface APIInterfacesRest {
             @Part("picture") RequestBody picture
     );
 
-    @GET("covid/detail")
-    Call<Covid>getDetail(@Query("id") String id);
+    @GET("covid/all")
+    Call<GetAllModel>GeatAll();
+
+
     @Multipart
     @POST("Covid/update")
     Call<UpdateModel> updateData(
