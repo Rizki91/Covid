@@ -3,6 +3,7 @@ package com.fahrul.covid;
 import androidx.fragment.app.FragmentActivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
@@ -64,18 +65,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap map) {
 
-//        GeoLocator geoLocator = new GeoLocator(getApplicationContext(),this);
-//        lat = geoLocator.getLattitude();
-//        lon = geoLocator.getLongitude();
-//
-        String json = SharedPrefUtil.getInstance(MapsActivity.this).getString("data_input");
-        DataSPUCovidModel dataSPUCovidModel = new Gson().fromJson(json, DataSPUCovidModel.class);
+        GeoLocator geoLocator = new GeoLocator(getApplicationContext(),this);
+        lat = geoLocator.getLattitude();
+        lon = geoLocator.getLongitude();
+////
+//        String json = SharedPrefUtil.getInstance(MapsActivity.this).getString("data_input");
+//        DataSPUCovidModel dataSPUCovidModel = new Gson().fromJson(json, DataSPUCovidModel.class);
 
         mMap = map;
 
         // Add a marker in MyLocation and move the camera
         float zoomLevel = 16.0f; //This goes up to 21
-        LatLng myLocation = new LatLng(dataSPUCovidModel.getLat(),dataSPUCovidModel.getLon());
+//        Intent resultIntent = new Intent();
+        LatLng myLocation = new LatLng(lat,lon);
         mMap.addMarker(new MarkerOptions()
                 .position(myLocation)
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
@@ -138,7 +140,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onResponse(Call<GetAllModel> call, Response<GetAllModel> response) {
                 progressDialog.dismiss();
                 GetAllModel listCovid = response.body();
-                float[] dis = new float[1];
+                float[] dis = new float[2];
 
                 for (int i=0;i<listCovid.getData().getCovid().size();i++){
 
@@ -146,9 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Location.distanceBetween(
                             Double.parseDouble(listCovid.getData().getCovid().get(i).getLat()),
                             Double.parseDouble(listCovid.getData().getCovid().get(i).getLon()),
-                            lat,
-                            lon,
-                            dis);
+                            lat,lon, dis);
 
                     if( dis[0] > radius  ){
                     } else {
@@ -157,6 +157,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
 
                 if (listCovid !=null) {
+
+
+
+
+
                     for (int i=0;i<listCovid.getData().getCovid().size();i++){
                         list.add(listCovid.getData().getCovid().get(i));
                     }

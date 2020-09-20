@@ -18,6 +18,7 @@ import com.fahrul.covid.service.APIClient;
 import com.fahrul.covid.service.APIInterfacesRest;
 import com.fahrul.covid.utility.SharedPrefUtil;
 import com.google.gson.Gson;
+import com.location.aravind.getlocation.GeoLocator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +44,7 @@ public class UpdateStatus extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_status);
+
 
         linlayKembali = findViewById(R.id.linlayKembali);
         cb1 = findViewById(R.id.cb1);
@@ -160,13 +162,14 @@ public class UpdateStatus extends AppCompatActivity {
         //TimeStamp
         Long tsLong = System.currentTimeMillis()/1000;
         String ts = tsLong.toString();
+        GeoLocator geoLocator = new GeoLocator(getApplicationContext(),this);
 
         Call<UpdateModel> absentAdd = apiInterface.updateData(
                 toRequestBody(dataSPUCovidModel.getId()),
                 toRequestBody(dataSPUCovidModel.getUsername()),
                 toRequestBody(kondisi),
-                toRequestBody(String.valueOf(dataSPUCovidModel.getLat())),
-                toRequestBody(String.valueOf(dataSPUCovidModel.getLon())),
+                toRequestBody(String.valueOf(geoLocator.getLattitude())),
+                toRequestBody(String.valueOf(geoLocator.getLongitude())),
                 toRequestBody(ts),
                 toRequestBody(status),
                 toRequestBody(dataSPUCovidModel.getNama_lengkap()),
